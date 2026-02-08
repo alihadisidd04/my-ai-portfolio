@@ -11,18 +11,39 @@ export default function ContactPage() {
         e.preventDefault();
         setStatus("Sending...");
 
-        const response = await fetch("https://formspree.io/f/mnjbqrzo", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(form)
-        });
-        // Replace with your Formspree link if you have one
-        setTimeout(() => {
-            setStatus("✅ Message sent! I'll get back to you soon.");
-            setForm({ name: "", email: "", message: "" });
-        }, 1000);
+        try {
+            // 1. Send the data to Formspree (REAL REQUEST)
+            const response = await fetch("https://formspree.io/f/mnjbqrzo", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    name: form.name,
+                    email: form.email,
+                    message: form.message
+                })
+            });
+
+            // 2. Check if it actually worked
+            if (response.ok) {
+                setStatus("✅ Message sent! I'll get back to you soon.");
+                setForm({ name: "", email: "", message: "" }); // Clear form
+            } else {
+                // If it failed, show the error from Formspree
+                const data = await response.json();
+                console.error("Formspree Error:", data);
+                if (Object.hasOwn(data, 'errors')) {
+                    setStatus(data["errors"].map(error => error["message"]).join(", "));
+                } else {
+                    setStatus("❌ Oops! Something went wrong.");
+                }
+            }
+        } catch (error) {
+            console.error("Network Error:", error);
+            setStatus("❌ Network Error. Please try again.");
+        }
     };
 
     return (
@@ -54,7 +75,6 @@ export default function ContactPage() {
                         </a>
 
                         {/* WHATSAPP BUTTON */}
-                        {/* Replace 92300... with your real number (include 92, remove 0 at start) */}
                         <a href="https://wa.me/923106672720" target="_blank" className="flex items-center gap-3 p-4 bg-zinc-950 border border-zinc-800 rounded-xl hover:border-green-500 transition group">
                             <FaWhatsapp className="text-2xl text-zinc-400 group-hover:text-green-500 transition" />
                             <span className="font-bold text-zinc-400 group-hover:text-white transition">WhatsApp</span>
@@ -110,7 +130,7 @@ export default function ContactPage() {
                     <button type="submit" className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-zinc-200 transition">
                         Send Message ↗
                     </button>
-                    {status && <p className="text-green-400 text-sm text-center">{status}</p>}
+                    {status && <p className="text-center text-sm mt-2 p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">{status}</p>}
                 </form>
 
             </div>
