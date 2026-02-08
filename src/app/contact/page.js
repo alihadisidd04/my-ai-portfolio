@@ -10,6 +10,14 @@ export default function ContactPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus("Sending...");
+
+        const response = await fetch("https://formspree.io/f/mnjbqrzo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(form)
+        });
         // Replace with your Formspree link if you have one
         setTimeout(() => {
             setStatus("✅ Message sent! I'll get back to you soon.");
