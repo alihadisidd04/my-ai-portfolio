@@ -24,3 +24,74 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Page Transition Animation */
+/* src/app/globals.css */
+
+/* 1. Page Transition (Slide Up) */
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+    /* Start 50px lower */
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page {
+  /* Runs for 1 second, nice and slow */
+  animation: slideUpFade 1s ease-out forwards;
+}
+
+/* 2. Scroll Reveal (The items waiting to appear) */
+.reveal {
+  opacity: 0;
+  /* Hidden by default */
+  transform: translateY(50px);
+  /* Pushed down */
+  transition: all 1s ease-out;
+  /* Takes 1 second to float up */
+}
+
+.reveal.active {
+  opacity: 1;
+  /* Become visible */
+  transform: translateY(0);
+  /* Float to normal spot */
+}
+
+/* src/app/globals.css */
+
+@keyframes messagePop {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-message {
+  animation: messagePop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar (Keep this if you added it earlier) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #18181b;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 10px;
+}
