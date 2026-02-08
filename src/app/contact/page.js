@@ -79,7 +79,6 @@ export default function ContactPage() {
                             <FaWhatsapp className="text-2xl text-zinc-400 group-hover:text-green-500 transition" />
                             <span className="font-bold text-zinc-400 group-hover:text-white transition">WhatsApp</span>
                         </a>
-
                         {/* EMAIL BUTTON */}
                         <a
                             href="https://mail.google.com/mail/?view=cm&fs=1&to=alihadi.sidd04@gmail.com"
